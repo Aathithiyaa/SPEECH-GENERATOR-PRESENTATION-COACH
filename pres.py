@@ -46,9 +46,7 @@ def get_text_from_voice():
         except sr.WaitTimeoutError:
             print("⚠️ Timeout reached. No speech detected.")
             return "No speech detected."
-        except sr.UnknownValueError:
-            print("⚠️ Speech not recognized.")
-            return "Speech not recognized."
+       
         except sr.RequestError as e:
             print(f"⚠️ API error: {e}")
             return f"API error: {e}"
@@ -62,7 +60,7 @@ def get_text_from_input():
 def analyze_sentiment(text):
     result = sentiment_pipeline(text, truncation=True, padding=True, max_length=512)[0]
     label = result['label']
-    confidence = result['score']
+    confidence = result['score'] *100
     return label, confidence
 
 def structure_score(text):
@@ -103,7 +101,7 @@ def run_presentation_coach():
 
     print("\n📊 Presentation Analysis")
     print(f"🧠 Sentiment: {label}")
-    print(f"💪 Confidence Score: {confidence}/100")
+    print(f"💪 Confidence Score: {confidence:.2f}/100")
     print(f"📐 Structure Score: {structure}/100")
     print("💡 Suggestions to Improve:")
     for tip in improvements:
