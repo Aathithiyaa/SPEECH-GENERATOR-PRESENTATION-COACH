@@ -5,12 +5,14 @@ This project provides a modular and extensible framework for generating, analyzi
 ## Features
 
 ### 1. Presentation Coach
+
 - Supports speech input via microphone or manual text
 - Performs sentiment analysis using HuggingFace Transformers
 - Evaluates structural clarity based on sentence count
 - Generates improvement suggestions based on delivery quality
 
 ### 2. Speech Generator with Audio Support
+
 - Customizable tone styles: formal, motivational, persuasive, debate, humorous, instructional, and storytelling
 - Tailors speeches for target audiences such as students, experts, executives, or children
 - Provides text-to-speech (TTS) synthesis using `pyttsx3` with configurable voice settings
@@ -32,8 +34,7 @@ pip install transformers torch torchaudio speechrecognition pyttsx3 ipywidgets g
 
 ## File Structure
 
-```
-speech-generator-presentation-coach/
+```speech-generator-presentation-coach/
 ├── .venv/                     # Python virtual environment
 ├── .gitignore                 # Git ignore rules
 ├── README.md                  # Project documentation
@@ -42,7 +43,6 @@ speech-generator-presentation-coach/
 ├── GEN_SPEECH.ipynb           # Jupyter notebook interface
 ├── pres.py                    # Script for presentation coach or CLI logic
 ```
-
 
 ## Usage
 
@@ -69,6 +69,7 @@ Create a `groq_api_key.json` file in your project directory or user home directo
 ```
 
 The application will attempt to load the key from:
+
 - `~/groq_api_key.json`
 - `./groq_api_key.json`
 
@@ -86,6 +87,7 @@ The following Groq-supported models are pre-integrated:
 ## Voice Configuration
 
 Text-to-speech voice settings are available for:
+
 - Male
 - Female
 

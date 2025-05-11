@@ -1,5 +1,5 @@
 import os
-os.environ["TRANSFORMERS_NO_TF"] = "1"  # 👈 Force Transformers to ignore TensorFlow
+os.environ["TRANSFORMERS_NO_TF"] = "1"  
 import speech_recognition as sr
 from transformers import pipeline
 from sklearn.feature_extraction.text import CountVectorizer
@@ -23,22 +23,22 @@ def get_user_input():
     choice = input("Enter 1 or 2: ").strip()
     return choice
 
-import speech_recognition as sr
+import speech_recognition as sr  
 
 def get_text_from_voice():
-    recognizer = sr.Recognizer()  # Initialize recognizer inside the function
+    recognizer = sr.Recognizer()  
     
     with sr.Microphone() as source:
         print("🎤 Adjusting for ambient noise... Please wait.")
         recognizer.adjust_for_ambient_noise(source, duration=1) 
-        recognizer.pause_threshold=1.5 # Adjust for ambient noise
+        recognizer.pause_threshold=1.5 
         print("🎤 Speak now...")
 
         try:
-            audio = recognizer.listen(source, timeout=5, phrase_time_limit=30)  # Wait for up to 10 seconds for speech
+            audio = recognizer.listen(source, timeout=5, phrase_time_limit=30)  
             print("🎤 Listening...")
 
-            # Recognize speech using Google's speech recognition service
+           
             text = recognizer.recognize_google(audio)
             print("\n📝 Transcription: ", text)
             return text
