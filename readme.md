@@ -32,9 +32,17 @@ pip install transformers torch torchaudio speechrecognition pyttsx3 ipywidgets g
 
 ## File Structure
 
-- `code.txt` – Main source code
-- `groq_api_key.json` – Optional local file to store the Groq API key
-- `speech_outputs/` – Directory for saved speeches and generated audio
+```
+speech-generator-presentation-coach/
+├── .venv/                     # Python virtual environment
+├── .gitignore                 # Git ignore rules
+├── README.md                  # Project documentation
+├── requirements.txt           # Python dependencies
+├── groq_api_key.json          # Groq API key (excluded from version control)
+├── GEN_SPEECH.ipynb           # Jupyter notebook interface
+├── pres.py                    # Script for presentation coach or CLI logic
+```
+
 
 ## Usage
 
