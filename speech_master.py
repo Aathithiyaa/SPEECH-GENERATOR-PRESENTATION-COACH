@@ -1,19 +1,15 @@
 import os
 import nltk
 nltk.download('punkt')
-import re
-import json
-import time
-import logging
-import base64
-from typing import Dict, List, Optional, Tuple
-import pyttsx3
-import tempfile
-from pathlib import Path
-from groq import Groq
-from nltk.tokenize import sent_tokenize
+import re  # noqa: E402
+import logging  # noqa: E402
+import base64  # noqa: E402
+from typing import Dict, Tuple  # noqa: E402
+import pyttsx3  # noqa: E402
+import tempfile  # noqa: E402
+from groq import Groq  # noqa: E402
+from nltk.tokenize import sent_tokenize  # noqa: E402
 
-# Set up logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
 
@@ -52,12 +48,7 @@ class SpeechGenerator:
     }
     
     def __init__(self, api_key=None):
-        """
-        Initialize the SpeechGenerator with an API key.
-        
-        Args:
-            api_key: The Groq API key.
-        """
+  
         self.api_key = api_key
         self.client = None
         self.output_folder = "speech_outputs"
@@ -205,7 +196,6 @@ class SpeechGenerator:
         clean_text = self.prepare_text_for_tts(text)
         self.set_voice(voice)
         
-        # Create a temporary file
         temp_file = tempfile.NamedTemporaryFile(delete=False, suffix='.mp3')
         temp_file.close()
         
@@ -230,11 +220,11 @@ class SpeechGenerator:
 class PresentationCoach:
     
     def __init__(self):
-        # Initialize any required resources
+       
         pass
         
     def analyze_sentiment(self, text):
-        # Simplified sentiment analysis without dependency on HuggingFace pipeline
+       
         positive_words = ['good', 'great', 'excellent', 'positive', 'happy', 'joy', 'love', 
                           'wonderful', 'fantastic', 'amazing', 'best', 'better', 'success']
         negative_words = ['bad', 'poor', 'terrible', 'negative', 'sad', 'hate', 'worst', 
@@ -267,10 +257,10 @@ class PresentationCoach:
         if not words:
             return 0
         
-        # Average word length as a simple complexity metric
+       
         avg_word_length = sum(len(word) for word in words) / len(words)
         
-        # Scale to a 100-point score
+
         complexity_score = min(100, avg_word_length * 10)
         
         return round(complexity_score, 2)
@@ -299,7 +289,6 @@ class PresentationCoach:
         return suggestions
 
 
-# Helper function to allow audio download
 def get_binary_file_downloader_html(bin_file, file_label='File'):
     with open(bin_file, 'rb') as f:
         data = f.read()

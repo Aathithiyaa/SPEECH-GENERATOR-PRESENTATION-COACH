@@ -1,16 +1,6 @@
 import streamlit as st
-import os
-import base64
-from typing import Dict
-import tempfile
-import sys
-import time
+from speech_master import SpeechGenerator, PresentationCoach
 
-# Import the core functionality
-# Assuming the core file is named "speech_master_core.py"
-from speech_master import SpeechGenerator, PresentationCoach, get_binary_file_downloader_html
-
-# Page configuration
 st.set_page_config(
     page_title="Speech Master AI",
     page_icon="🎤",
@@ -18,7 +8,6 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# Custom CSS styling
 st.markdown("""
 <style>
     .main-header {
@@ -74,7 +63,6 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-# App state initialization
 if 'api_key_saved' not in st.session_state:
     st.session_state.api_key_saved = False
 
@@ -90,16 +78,15 @@ if 'last_speech' not in st.session_state:
 if 'last_audio' not in st.session_state:
     st.session_state.last_audio = None
 
-# App Navigation
 st.markdown('<h1 class="main-header">🎤 Speech Master AI</h1>', unsafe_allow_html=True)
 
-# Sidebar
+
 with st.sidebar:
     st.image("https://via.placeholder.com/150x150.png?text=Speech+AI", width=150)
     st.markdown("### Navigation")
     page = st.radio("Choose a tool:", ["📝 Speech Generator", "🎯 Presentation Coach", "ℹ️ About"])
     
-    # API Key Input (in sidebar)
+    
     st.markdown("### Configuration")
     with st.expander("API Key Settings", expanded=not st.session_state.api_key_saved):
         api_key = st.text_input("Groq API Key:", type="password", 
@@ -115,12 +102,10 @@ with st.sidebar:
             else:
                 st.warning("Please enter an API key")
 
-    # Footer in sidebar
     st.markdown("---")
     st.markdown('<p class="footer">Created with ❤️ by Aadhi Speech Master AI © 2025</p>', unsafe_allow_html=True)
 
 
-# Main content area
 if page == "📝 Speech Generator":
     st.markdown('<h2 class="sub-header">AI Speech Generator</h2>', unsafe_allow_html=True)
     
@@ -155,7 +140,6 @@ if page == "📝 Speech Generator":
                 additional_instructions = st.text_area("Additional Instructions:", 
                                                    placeholder="E.g., Include a personal anecdote", max_chars=200)
         
-        # Generate speech button
         if st.button("Generate Speech", type="primary", use_container_width=True):
             with st.spinner("Generating your speech... This may take a moment"):
                 try:
@@ -171,17 +155,14 @@ if page == "📝 Speech Generator":
                     st.session_state.last_speech = speech_text
                     st.session_state.last_metadata = metadata
                     
-                    # Display success message
                     st.success(f"✅ Speech generated successfully with {metadata['word_count']} words (~{duration} minutes)")
                     
                 except Exception as e:
                     st.error(f"Error generating speech: {str(e)}")
         
-        # Display generated speech if available
         if st.session_state.last_speech:
             st.markdown("### Generated Speech")
             
-            # Speech metadata
             if 'last_metadata' in st.session_state:
                 meta = st.session_state.last_metadata
                 st.markdown(f"""
@@ -195,12 +176,10 @@ if page == "📝 Speech Generator":
             
             speech_text = st.session_state.last_speech
             
-            # Display speech content
             st.markdown('<div class="card">', unsafe_allow_html=True)
             st.markdown(speech_text)
             st.markdown('</div>', unsafe_allow_html=True)
             
-            # Audio generation
             audio_col1, audio_col2 = st.columns([3, 1])
             
             with audio_col1:
@@ -226,11 +205,9 @@ if page == "📝 Speech Generator":
                         use_container_width=True
                     )
             
-            # Audio player
             if st.session_state.last_audio:
                 st.audio(st.session_state.last_audio)
                 
-            # Download text option
             st.download_button(
                 label="Download Speech Text",
                 data=speech_text,
@@ -249,60 +226,54 @@ elif page == "🎯 Presentation Coach":
     </div>
     """, unsafe_allow_html=True)
     
-    # Text input for speech
     user_speech = st.text_area(
         "Enter your speech or presentation here:",
         height=200,
         placeholder="Paste your speech or draft presentation text here for analysis..."
     )
     
-    # Analyze button
     if st.button("Analyze Speech", type="primary", use_container_width=True) and user_speech:
         with st.spinner("Analyzing your speech..."):
-            # Get the coach from session state
             coach = st.session_state.coach
             
-            # Perform analysis
             sentiment_label, confidence = coach.analyze_sentiment(user_speech)
             structure_score, sentence_count = coach.structure_score(user_speech)
             complexity_score = coach.analyze_complexity(user_speech)
             suggestions = coach.suggest_improvements(sentiment_label, confidence, sentence_count, complexity_score)
             
-            # Display results
             st.markdown('<div class="results-container">', unsafe_allow_html=True)
             
-            # Results in columns
             col1, col2, col3 = st.columns(3)
             
             with col1:
-                st.markdown(f"### Sentiment")
+                st.markdown("### Sentiment")
                 sentiment_color = "green" if sentiment_label == "POSITIVE" else "red" if sentiment_label == "NEGATIVE" else "blue"
                 st.markdown(f"<h2 style='color: {sentiment_color}; text-align: center;'>{sentiment_label}</h2>", unsafe_allow_html=True)
                 st.progress(confidence/100)
                 st.caption(f"Confidence: {confidence:.1f}%")
             
             with col2:
-                st.markdown(f"### Structure")
+                st.markdown("### Structure")
                 st.markdown(f"<h2 style='text-align: center;'>{structure_score}/100</h2>", unsafe_allow_html=True)
                 st.progress(structure_score/100)
                 st.caption(f"Based on {sentence_count} sentences")
             
             with col3:
-                st.markdown(f"### Complexity")
+                st.markdown("### Complexity")
                 st.markdown(f"<h2 style='text-align: center;'>{complexity_score}/100</h2>", unsafe_allow_html=True)
                 st.progress(complexity_score/100)
                 complexity_level = "High" if complexity_score > 70 else "Medium" if complexity_score > 40 else "Low"
                 st.caption(f"Language complexity: {complexity_level}")
             
-            # Suggestions
+            
             st.markdown("### Improvement Suggestions")
             for suggestion in suggestions:
                 st.markdown(f"- {suggestion}")
             
-            # Word count stats
+        
             words = user_speech.split()
             word_count = len(words)
-            estimated_time = round(word_count / 130, 1)  # Assuming 130 words per minute
+            estimated_time = round(word_count / 130, 1)  
             
             st.markdown("### Speech Statistics")
             st.markdown(f"- Word count: **{word_count}** words")
@@ -340,7 +311,7 @@ elif page == "ℹ️ About":
     </div>
     """, unsafe_allow_html=True)
     
-    # Project statistics
+    
     st.markdown("### Project Statistics")
     
     col1, col2, col3, col4 = st.columns(4)
@@ -348,12 +319,10 @@ elif page == "ℹ️ About":
     col2.metric("Speech Styles", "8")
     col3.metric("Audience Types", "6")
     col4.metric("Voice Options", "2")
-
-# Run the app
 if __name__ == "__main__":
-    # Check if core module is available
+    
     try:
-        # Just a simple version check - you can expand this
+        
         if not hasattr(SpeechGenerator, 'STYLE_TEMPLATES'):
             st.error("Error: Core functionality module not loaded correctly.")
     except Exception as e:
