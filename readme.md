@@ -111,4 +111,4 @@ To use the Speech Generator feature, you'll need a Groq API key:
 
 ## Author
 
-Created by Aadhi © 2025
+Created by @AadhithyaPrakash, @Aathithiyaa @Aasis-Mohamed2208, @Jeeva2309 © 2025
