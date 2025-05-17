@@ -82,7 +82,7 @@ st.markdown('<h1 class="main-header">🎤 Speech Master AI</h1>', unsafe_allow_h
 
 
 with st.sidebar:
-    st.image("https://via.placeholder.com/150x150.png?text=Speech+AI", width=150)
+    st.image("F:\SPEECH-GENERATOR-PRESENTATION-COACH\assets\logo.png", width=150)
     st.markdown("### Navigation")
     page = st.radio("Choose a tool:", ["📝 Speech Generator", "🎯 Presentation Coach", "ℹ️ About"])
     
