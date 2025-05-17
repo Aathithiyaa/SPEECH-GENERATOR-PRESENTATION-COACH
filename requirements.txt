@@ -1,8 +1,0 @@
-transformers
-torch
-torchaudio
-speechrecognition
-pyttsx3
-ipywidgets
-nltk
-groq
